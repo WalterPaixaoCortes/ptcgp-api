@@ -6,13 +6,6 @@ from pydantic import BaseModel
 from contextlib import asynccontextmanager
 
 
-app = FastAPI(
-    title="PTCGP API",
-    description="API for TCG Pocket Simulator - Card Database",
-    version="1.0.0",
-)
-
-
 # Modelo para representar uma carta
 class Card(BaseModel):
     id: Optional[str] = None
@@ -34,14 +27,22 @@ def load_cards_data():
         raise HTTPException(status_code=500, detail="Invalid JSON format in cards data")
 
 
-# Cache dos dados das cartas
-cards_data = None
-
-
-@app.on_event("startup")
-async def startup_event():
+# @app.on_event("startup")
+@asynccontextmanager
+async def startup_event(app: FastAPI):
     global cards_data
     cards_data = load_cards_data()
+    yield
+
+
+# Cache dos dados das cartas
+cards_data = None
+app = FastAPI(
+    title="PTCGP API",
+    description="API for TCG Pocket Simulator - Card Database",
+    version="1.0.0",
+    lifespan=startup_event,
+)
 
 
 @app.get("/")
