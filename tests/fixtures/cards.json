@@ -1,0 +1,633 @@
+{
+  "data_version": "2026-11-04T12:00:00Z",
+  "source": "https://pocket.limitlesstcg.com",
+  "cards": [
+    {
+      "id": "A1-1",
+      "number": 1,
+      "name": "Bulbasaur",
+      "type": "Grass",
+      "hp": 70,
+      "card_type": "Pokémon",
+      "stage": "Basic",
+      "evolve": null,
+      "rarity": "◊",
+      "ability": null,
+      "attacks": [
+        {
+          "name": "Vine Whip",
+          "cost": [
+            "G",
+            "C"
+          ],
+          "energy_count": 2,
+          "damage": 40,
+          "damage_modifier": null,
+          "effect": null
+        }
+      ],
+      "effect": null,
+      "weakness": "Fire",
+      "retreat_cost": 1,
+      "img": "https://example.test/A1_1.webp",
+      "set": {
+        "code": "A1",
+        "name": "Genetic Apex",
+        "release_date": "2024-10-30",
+        "url": "https://pocket.limitlesstcg.com/cards/A1"
+      }
+    },
+    {
+      "id": "A1-260",
+      "number": 260,
+      "name": "Zapdos ex",
+      "type": "Lightning",
+      "hp": 130,
+      "card_type": "Pokémon",
+      "stage": "Basic",
+      "evolve": null,
+      "rarity": "☆☆",
+      "ability": null,
+      "attacks": [
+        {
+          "name": "Peck",
+          "cost": [
+            "L"
+          ],
+          "energy_count": 1,
+          "damage": 20,
+          "damage_modifier": null,
+          "effect": null
+        },
+        {
+          "name": "Thundering Hurricane",
+          "cost": [
+            "L",
+            "L",
+            "L"
+          ],
+          "energy_count": 3,
+          "damage": 50,
+          "damage_modifier": "x",
+          "effect": "Flip 4 coins. This attack does 50 damage for each heads."
+        }
+      ],
+      "effect": null,
+      "weakness": "Lightning",
+      "retreat_cost": 1,
+      "img": "https://example.test/A1_260.webp",
+      "set": {
+        "code": "A1",
+        "name": "Genetic Apex",
+        "release_date": "2024-10-30",
+        "url": "https://pocket.limitlesstcg.com/cards/A1"
+      }
+    },
+    {
+      "id": "A1-286",
+      "number": 286,
+      "name": "Mewtwo ex",
+      "type": "Psychic",
+      "hp": 150,
+      "card_type": "Pokémon",
+      "stage": "Basic",
+      "evolve": null,
+      "rarity": "♛",
+      "ability": null,
+      "attacks": [
+        {
+          "name": "Psychic Sphere",
+          "cost": [
+            "P",
+            "C"
+          ],
+          "energy_count": 2,
+          "damage": 50,
+          "damage_modifier": null,
+          "effect": null
+        },
+        {
+          "name": "Psydrive",
+          "cost": [
+            "P",
+            "P",
+            "C",
+            "C"
+          ],
+          "energy_count": 4,
+          "damage": 150,
+          "damage_modifier": null,
+          "effect": "Discard 2 [P] Energy from this Pokémon."
+        }
+      ],
+      "effect": null,
+      "weakness": "Darkness",
+      "retreat_cost": 2,
+      "img": "https://example.test/A1_286.webp",
+      "set": {
+        "code": "A1",
+        "name": "Genetic Apex",
+        "release_date": "2024-10-30",
+        "url": "https://pocket.limitlesstcg.com/cards/A1"
+      }
+    },
+    {
+      "id": "A1-7",
+      "number": 7,
+      "name": "Butterfree",
+      "type": "Grass",
+      "hp": 120,
+      "card_type": "Pokémon",
+      "stage": "Stage 2",
+      "evolve": "Evolves from Metapod",
+      "rarity": "◊◊◊",
+      "ability": {
+        "name": "Powder Heal",
+        "text": "Once during your turn, you may heal 20 damage from each of your Pokémon."
+      },
+      "attacks": [
+        {
+          "name": "Gust",
+          "cost": [
+            "G",
+            "C",
+            "C"
+          ],
+          "energy_count": 3,
+          "damage": 60,
+          "damage_modifier": null,
+          "effect": null
+        }
+      ],
+      "effect": null,
+      "weakness": "Fire",
+      "retreat_cost": 1,
+      "img": "https://example.test/A1_7.webp",
+      "set": {
+        "code": "A1",
+        "name": "Genetic Apex",
+        "release_date": "2024-10-30",
+        "url": "https://pocket.limitlesstcg.com/cards/A1"
+      }
+    },
+    {
+      "id": "A2-147",
+      "number": 147,
+      "name": "Giant Cape",
+      "type": null,
+      "hp": null,
+      "card_type": "Trainer",
+      "stage": "Tool",
+      "evolve": null,
+      "rarity": "◊◊",
+      "ability": null,
+      "attacks": [],
+      "effect": "The Pokémon this card is attached to gets +20 HP.",
+      "weakness": null,
+      "retreat_cost": null,
+      "img": "https://example.test/A2_147.webp",
+      "set": {
+        "code": "A2",
+        "name": "Space-Time Smackdown",
+        "release_date": "2025-01-29",
+        "url": "https://pocket.limitlesstcg.com/cards/A2"
+      }
+    },
+    {
+      "id": "A3-126",
+      "number": 126,
+      "name": "Hakamo-o",
+      "type": "Dragon",
+      "hp": 100,
+      "card_type": "Pokémon",
+      "stage": "Stage 1",
+      "evolve": "Evolves from Jangmo-o",
+      "rarity": "◊◊",
+      "ability": null,
+      "attacks": [
+        {
+          "name": "Dragon Claw",
+          "cost": [
+            "L",
+            "F"
+          ],
+          "energy_count": 2,
+          "damage": 60,
+          "damage_modifier": null,
+          "effect": null
+        }
+      ],
+      "effect": null,
+      "weakness": null,
+      "retreat_cost": 2,
+      "img": "https://example.test/A3_126.webp",
+      "set": {
+        "code": "A3",
+        "name": "Celestial Guardians",
+        "release_date": "2025-04-30",
+        "url": "https://pocket.limitlesstcg.com/cards/A3"
+      }
+    },
+    {
+      "id": "A3-127",
+      "number": 127,
+      "name": "Kommo-o",
+      "type": "Dragon",
+      "hp": 150,
+      "card_type": "Pokémon",
+      "stage": "Stage 2",
+      "evolve": "Evolves from Hakamo-o",
+      "rarity": "◊◊◊",
+      "ability": null,
+      "attacks": [
+        {
+          "name": "Clanging Scales",
+          "cost": [
+            "L",
+            "F"
+          ],
+          "energy_count": 2,
+          "damage": 130,
+          "damage_modifier": null,
+          "effect": "During your opponent's next turn, this Pokémon takes +30 damage from attacks."
+        }
+      ],
+      "effect": null,
+      "weakness": null,
+      "retreat_cost": 2,
+      "img": "https://example.test/A3_127.webp",
+      "set": {
+        "code": "A3",
+        "name": "Celestial Guardians",
+        "release_date": "2025-04-30",
+        "url": "https://pocket.limitlesstcg.com/cards/A3"
+      }
+    },
+    {
+      "id": "A4-75",
+      "number": 75,
+      "name": "Smoochum",
+      "type": "Psychic",
+      "hp": 30,
+      "card_type": "Pokémon",
+      "stage": "Basic",
+      "evolve": null,
+      "rarity": "◊◊◊",
+      "ability": null,
+      "attacks": [
+        {
+          "name": "Shivery Wave",
+          "cost": [],
+          "energy_count": 0,
+          "damage": 20,
+          "damage_modifier": "x",
+          "effect": "This attack does 20 damage for each Energy attached to your opponent's Active Pokémon."
+        }
+      ],
+      "effect": null,
+      "weakness": null,
+      "retreat_cost": 0,
+      "img": "https://example.test/A4_75.webp",
+      "set": {
+        "code": "A4",
+        "name": "Wisdom of Sea and Sky",
+        "release_date": "2025-07-30",
+        "url": "https://pocket.limitlesstcg.com/cards/A4"
+      }
+    },
+    {
+      "id": "A4b-312",
+      "number": 312,
+      "name": "Old Amber",
+      "type": null,
+      "hp": 40,
+      "card_type": "Trainer",
+      "stage": "Item",
+      "evolve": null,
+      "rarity": "◊",
+      "ability": null,
+      "attacks": [],
+      "effect": "Play this card as if it were a 40-HP Basic [C] Pokémon. At any time during your turn, you may discard this card from play. This card can't retreat.",
+      "weakness": null,
+      "retreat_cost": null,
+      "img": "https://example.test/A4b_312.webp",
+      "set": {
+        "code": "A4b",
+        "name": "Deluxe Pack: ex",
+        "release_date": "2025-09-30",
+        "url": "https://pocket.limitlesstcg.com/cards/A4b"
+      }
+    },
+    {
+      "id": "A4b-362",
+      "number": 362,
+      "name": "Ho-Oh ex",
+      "type": "Fire",
+      "hp": 150,
+      "card_type": "Pokémon",
+      "stage": "Basic",
+      "evolve": null,
+      "rarity": "☆☆",
+      "ability": null,
+      "attacks": [
+        {
+          "name": "Phoenix Turbo",
+          "cost": [
+            "C",
+            "C",
+            "C"
+          ],
+          "energy_count": 3,
+          "damage": 80,
+          "damage_modifier": null,
+          "effect": "Take a [R], [W], and [L] Energy from your Energy Zone and attach them to your Benched Basic Pokémon in any way you like."
+        }
+      ],
+      "effect": null,
+      "weakness": "Lightning",
+      "retreat_cost": 2,
+      "img": "https://example.test/A4b_362.webp",
+      "set": {
+        "code": "A4b",
+        "name": "Deluxe Pack: ex",
+        "release_date": "2025-09-30",
+        "url": "https://pocket.limitlesstcg.com/cards/A4b"
+      }
+    },
+    {
+      "id": "B1-18",
+      "number": 18,
+      "name": "Lilligant",
+      "type": "Grass",
+      "hp": 80,
+      "card_type": "Pokémon",
+      "stage": "Stage 1",
+      "evolve": "Evolves from Petilil",
+      "rarity": "◊◊◊",
+      "ability": {
+        "name": "Toughness Aroma",
+        "text": "Each of your [G] Pokémon gets +20 HP."
+      },
+      "attacks": [
+        {
+          "name": "Smack",
+          "cost": [
+            "G",
+            "C"
+          ],
+          "energy_count": 2,
+          "damage": 50,
+          "damage_modifier": null,
+          "effect": null
+        }
+      ],
+      "effect": null,
+      "weakness": "Fire",
+      "retreat_cost": 1,
+      "img": "https://example.test/B1_18.webp",
+      "set": {
+        "code": "B1",
+        "name": "Mega Rising",
+        "release_date": "2025-10-30",
+        "url": "https://pocket.limitlesstcg.com/cards/B1"
+      }
+    },
+    {
+      "id": "B1-213",
+      "number": 213,
+      "name": "Prank Spinner",
+      "type": null,
+      "hp": null,
+      "card_type": "Trainer",
+      "stage": "Item",
+      "evolve": null,
+      "rarity": "◊◊",
+      "ability": null,
+      "attacks": [],
+      "effect": "A card from among both player's hands is chosen at random, revealed to the other player, and shuffled into its owner's deck.",
+      "weakness": null,
+      "retreat_cost": null,
+      "img": "https://example.test/B1_213.webp",
+      "set": {
+        "code": "B1",
+        "name": "Mega Rising",
+        "release_date": "2025-10-30",
+        "url": "https://pocket.limitlesstcg.com/cards/B1"
+      }
+    },
+    {
+      "id": "B1-250",
+      "number": 250,
+      "name": "Rufflet",
+      "type": "Colorless",
+      "hp": 60,
+      "card_type": "Pokémon",
+      "stage": "Basic",
+      "evolve": null,
+      "rarity": "☆",
+      "ability": null,
+      "attacks": [
+        {
+          "name": "Wing Attack",
+          "cost": [
+            "C",
+            "C"
+          ],
+          "energy_count": 2,
+          "damage": 40,
+          "damage_modifier": null,
+          "effect": null
+        }
+      ],
+      "effect": null,
+      "weakness": "Lightning",
+      "retreat_cost": 1,
+      "img": "https://example.test/B1_250.webp",
+      "set": {
+        "code": "B1",
+        "name": "Mega Rising",
+        "release_date": "2025-10-30",
+        "url": "https://pocket.limitlesstcg.com/cards/B1"
+      }
+    },
+    {
+      "id": "B1-32",
+      "number": 32,
+      "name": "Ho-Oh",
+      "type": "Fire",
+      "hp": 120,
+      "card_type": "Pokémon",
+      "stage": "Basic",
+      "evolve": null,
+      "rarity": "◊◊◊",
+      "ability": null,
+      "attacks": [
+        {
+          "name": "Blessed Burn",
+          "cost": [
+            "R",
+            "R",
+            "C",
+            "C"
+          ],
+          "energy_count": 4,
+          "damage": 100,
+          "damage_modifier": null,
+          "effect": "Heal 30 damage from each of your Benched Basic Pokémon."
+        }
+      ],
+      "effect": null,
+      "weakness": "Lightning",
+      "retreat_cost": 2,
+      "img": "https://example.test/B1_32.webp",
+      "set": {
+        "code": "B1",
+        "name": "Mega Rising",
+        "release_date": "2025-10-30",
+        "url": "https://pocket.limitlesstcg.com/cards/B1"
+      }
+    },
+    {
+      "id": "B2a-15",
+      "number": 15,
+      "name": "Wo-Chien",
+      "type": "Grass",
+      "hp": 120,
+      "card_type": "Pokémon",
+      "stage": "Basic",
+      "evolve": null,
+      "rarity": "◊◊◊",
+      "ability": null,
+      "attacks": [
+        {
+          "name": "Binding Greed",
+          "cost": [
+            "G",
+            "G",
+            "G",
+            "C"
+          ],
+          "energy_count": 4,
+          "damage": 90,
+          "damage_modifier": null,
+          "effect": "During your opponent's next turn, attacks used by the Defending Pokémon cost 2 [C] more."
+        }
+      ],
+      "effect": null,
+      "weakness": "Fire",
+      "retreat_cost": 3,
+      "img": "https://example.test/B2a_15.webp",
+      "set": {
+        "code": "B2a",
+        "name": "Paldean Wonders",
+        "release_date": "2026-02-26",
+        "url": "https://pocket.limitlesstcg.com/cards/B2a"
+      }
+    },
+    {
+      "id": "P-A-1",
+      "number": 1,
+      "name": "Potion",
+      "type": null,
+      "hp": null,
+      "card_type": "Trainer",
+      "stage": "Item",
+      "evolve": null,
+      "rarity": null,
+      "ability": null,
+      "attacks": [],
+      "effect": "Heal 20 damage from 1 of your Pokémon.",
+      "weakness": null,
+      "retreat_cost": null,
+      "img": "https://example.test/P-A_1.webp",
+      "set": {
+        "code": "P-A",
+        "name": "Promo-A",
+        "release_date": null,
+        "url": "https://pocket.limitlesstcg.com/cards/P-A"
+      }
+    },
+    {
+      "id": "P-B-41",
+      "number": 41,
+      "name": "Chien-Pao ex",
+      "type": "Water",
+      "hp": 130,
+      "card_type": "Pokémon",
+      "stage": "Basic",
+      "evolve": null,
+      "rarity": null,
+      "ability": null,
+      "attacks": [
+        {
+          "name": "Icicle",
+          "cost": [
+            "W"
+          ],
+          "energy_count": 1,
+          "damage": 20,
+          "damage_modifier": null,
+          "effect": null
+        },
+        {
+          "name": "Diving Icicles",
+          "cost": [
+            "W",
+            "W",
+            "W"
+          ],
+          "energy_count": 3,
+          "damage": null,
+          "damage_modifier": null,
+          "effect": "Discard all [W] Energy from this Pokémon. This attack does 130 damage to 1 of your opponent's Pokémon."
+        }
+      ],
+      "effect": null,
+      "weakness": "Metal",
+      "retreat_cost": 1,
+      "img": "https://example.test/P-B_41.webp",
+      "set": {
+        "code": "P-B",
+        "name": "Promo-B",
+        "release_date": null,
+        "url": "https://pocket.limitlesstcg.com/cards/P-B"
+      }
+    },
+    {
+      "id": "A4-34",
+      "number": 34,
+      "name": "Ho-Oh ex",
+      "type": "Fire",
+      "hp": 150,
+      "card_type": "Pokémon",
+      "stage": "Basic",
+      "evolve": null,
+      "rarity": "◊◊◊◊",
+      "ability": null,
+      "attacks": [
+        {
+          "name": "Phoenix Turbo",
+          "cost": [
+            "C",
+            "C",
+            "C"
+          ],
+          "energy_count": 3,
+          "damage": 80,
+          "damage_modifier": null,
+          "effect": "Take a [R], [W], and [L] Energy from your Energy Zone and attach them to your Benched Basic Pokémon in any way you like."
+        }
+      ],
+      "effect": null,
+      "weakness": "Lightning",
+      "retreat_cost": 2,
+      "img": "https://example.test/A4_34.webp",
+      "set": {
+        "code": "A4",
+        "name": "Wisdom of Sea and Sky",
+        "release_date": "2025-07-30",
+        "url": "https://pocket.limitlesstcg.com/cards/A4"
+      }
+    }
+  ]
+}
