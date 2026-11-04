@@ -7,6 +7,9 @@
       "number": 1,
       "name": "Bulbasaur",
       "type": "Grass",
+      "types": [
+        "Grass"
+      ],
       "hp": 70,
       "card_type": "Pokémon",
       "stage": "Basic",
@@ -42,6 +45,9 @@
       "number": 260,
       "name": "Zapdos ex",
       "type": "Lightning",
+      "types": [
+        "Lightning"
+      ],
       "hp": 130,
       "card_type": "Pokémon",
       "stage": "Basic",
@@ -88,6 +94,9 @@
       "number": 286,
       "name": "Mewtwo ex",
       "type": "Psychic",
+      "types": [
+        "Psychic"
+      ],
       "hp": 150,
       "card_type": "Pokémon",
       "stage": "Basic",
@@ -136,6 +145,9 @@
       "number": 7,
       "name": "Butterfree",
       "type": "Grass",
+      "types": [
+        "Grass"
+      ],
       "hp": 120,
       "card_type": "Pokémon",
       "stage": "Stage 2",
@@ -175,6 +187,7 @@
       "number": 147,
       "name": "Giant Cape",
       "type": null,
+      "types": [],
       "hp": null,
       "card_type": "Trainer",
       "stage": "Tool",
@@ -198,6 +211,9 @@
       "number": 126,
       "name": "Hakamo-o",
       "type": "Dragon",
+      "types": [
+        "Dragon"
+      ],
       "hp": 100,
       "card_type": "Pokémon",
       "stage": "Stage 1",
@@ -233,6 +249,9 @@
       "number": 127,
       "name": "Kommo-o",
       "type": "Dragon",
+      "types": [
+        "Dragon"
+      ],
       "hp": 150,
       "card_type": "Pokémon",
       "stage": "Stage 2",
@@ -268,6 +287,9 @@
       "number": 75,
       "name": "Smoochum",
       "type": "Psychic",
+      "types": [
+        "Psychic"
+      ],
       "hp": 30,
       "card_type": "Pokémon",
       "stage": "Basic",
@@ -300,6 +322,7 @@
       "number": 312,
       "name": "Old Amber",
       "type": null,
+      "types": [],
       "hp": 40,
       "card_type": "Trainer",
       "stage": "Item",
@@ -323,6 +346,9 @@
       "number": 362,
       "name": "Ho-Oh ex",
       "type": "Fire",
+      "types": [
+        "Fire"
+      ],
       "hp": 150,
       "card_type": "Pokémon",
       "stage": "Basic",
@@ -359,6 +385,9 @@
       "number": 18,
       "name": "Lilligant",
       "type": "Grass",
+      "types": [
+        "Grass"
+      ],
       "hp": 80,
       "card_type": "Pokémon",
       "stage": "Stage 1",
@@ -397,6 +426,7 @@
       "number": 213,
       "name": "Prank Spinner",
       "type": null,
+      "types": [],
       "hp": null,
       "card_type": "Trainer",
       "stage": "Item",
@@ -420,6 +450,9 @@
       "number": 250,
       "name": "Rufflet",
       "type": "Colorless",
+      "types": [
+        "Colorless"
+      ],
       "hp": 60,
       "card_type": "Pokémon",
       "stage": "Basic",
@@ -455,6 +488,9 @@
       "number": 32,
       "name": "Ho-Oh",
       "type": "Fire",
+      "types": [
+        "Fire"
+      ],
       "hp": 120,
       "card_type": "Pokémon",
       "stage": "Basic",
@@ -492,6 +528,9 @@
       "number": 15,
       "name": "Wo-Chien",
       "type": "Grass",
+      "types": [
+        "Grass"
+      ],
       "hp": 120,
       "card_type": "Pokémon",
       "stage": "Basic",
@@ -529,6 +568,7 @@
       "number": 1,
       "name": "Potion",
       "type": null,
+      "types": [],
       "hp": null,
       "card_type": "Trainer",
       "stage": "Item",
@@ -552,6 +592,9 @@
       "number": 41,
       "name": "Chien-Pao ex",
       "type": "Water",
+      "types": [
+        "Water"
+      ],
       "hp": 130,
       "card_type": "Pokémon",
       "stage": "Basic",
@@ -598,6 +641,9 @@
       "number": 34,
       "name": "Ho-Oh ex",
       "type": "Fire",
+      "types": [
+        "Fire"
+      ],
       "hp": 150,
       "card_type": "Pokémon",
       "stage": "Basic",
@@ -627,6 +673,46 @@
         "name": "Wisdom of Sea and Sky",
         "release_date": "2025-07-30",
         "url": "https://pocket.limitlesstcg.com/cards/A4"
+      }
+    },
+    {
+      "id": "C1-56",
+      "number": 56,
+      "name": "Mega Mewtwo X ex",
+      "type": "Psychic",
+      "types": [
+        "Psychic",
+        "Fighting"
+      ],
+      "hp": 180,
+      "card_type": "Pokémon",
+      "stage": "Basic",
+      "evolve": null,
+      "rarity": "◊◊◊◊",
+      "ability": null,
+      "attacks": [
+        {
+          "name": "Dual Impact",
+          "cost": [
+            "P",
+            "P",
+            "C"
+          ],
+          "energy_count": 3,
+          "damage": 100,
+          "damage_modifier": "+",
+          "effect": "If a Stadium is in play, this attack does 40 more damage."
+        }
+      ],
+      "effect": null,
+      "weakness": "Darkness",
+      "retreat_cost": 2,
+      "img": "https://example.test/C1_56.webp",
+      "set": {
+        "code": "C1",
+        "name": "Dual Fusion",
+        "release_date": "2026-10-29",
+        "url": "https://pocket.limitlesstcg.com/cards/C1"
       }
     }
   ]

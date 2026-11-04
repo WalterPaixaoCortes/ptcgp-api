@@ -3,7 +3,7 @@
   "info": {
     "title": "PTCGP API",
     "description": "API for TCG Pocket Simulator - Card Database",
-    "version": "2.0.0"
+    "version": "2.1.0"
   },
   "paths": {
     "/": {
@@ -761,6 +761,13 @@
             ],
             "title": "Type"
           },
+          "types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Types"
+          },
           "hp": {
             "anyOf": [
               {
@@ -877,6 +884,7 @@
           "number",
           "name",
           "type",
+          "types",
           "hp",
           "card_type",
           "stage",
@@ -1089,6 +1097,13 @@
             ],
             "title": "Type"
           },
+          "types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Types"
+          },
           "img": {
             "type": "string",
             "title": "Img"
@@ -1099,6 +1114,7 @@
           "id",
           "name",
           "type",
+          "types",
           "img"
         ],
         "title": "RankingCard"

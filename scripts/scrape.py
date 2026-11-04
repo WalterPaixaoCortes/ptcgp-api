@@ -200,7 +200,9 @@ def parse_card(html, item):
         "id": f"{item['set']['code']}-{item['number']}",
         "number": item["number"],
         "name": name,
-        "type": ptype,
+        # Dual-type cards show "Psychic/Fighting": `type` keeps the first, `types` has all.
+        "type": ptype.split("/")[0] if ptype else None,
+        "types": ptype.split("/") if ptype else [],
         "hp": hp,
         "card_type": card_type,
         "stage": stage,

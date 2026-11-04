@@ -13,7 +13,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel, ValidationError, model_validator
 
-API_VERSION = "2.0.0"
+API_VERSION = "2.1.0"
 DATA_FILE = os.environ.get("CARDS_FILE", "data/cards.json")
 CACHE_CONTROL = "public, max-age=3600"
 
@@ -62,7 +62,8 @@ class Card(BaseModel):
     id: str  # "<set code>-<number>", matches /cards/{set_id}/{card_id}
     number: int
     name: str
-    type: Optional[str]  # energy type; null for Trainers
+    type: Optional[str]  # first energy type; null for Trainers
+    types: list[str]  # all energy types (two for dual-type cards); empty for Trainers
     hp: Optional[int]
     card_type: Literal["Pokémon", "Trainer"]
     stage: Optional[str]
@@ -80,8 +81,10 @@ class Card(BaseModel):
     def check_scraped_fields(self):
         if "\n" in self.name:
             raise ValueError(f"name contains leaked markup: {self.name!r}")
-        if self.card_type == "Pokémon" and (self.type is None or self.hp is None):
+        if self.card_type == "Pokémon" and (not self.types or self.hp is None):
             raise ValueError("Pokémon without type or hp")
+        if self.type != (self.types[0] if self.types else None) or any("/" in t for t in self.types):
+            raise ValueError(f"inconsistent type {self.type!r} / types {self.types!r}")
         return self
 
 
@@ -105,6 +108,7 @@ class RankingCard(BaseModel):
     id: str
     name: str
     type: Optional[str]
+    types: list[str]
     img: str
 
 
@@ -294,11 +298,6 @@ def match_value(param: str, value: Optional[str], allowed: list[str]) -> str:
     raise HTTPException(status_code=422, detail=f"Invalid {param} {value!r}. Allowed: {', '.join(allowed)}")
 
 
-def card_types(card: Card) -> list[str]:
-    """Dual-type cards are stored as 'Psychic/Fighting'."""
-    return card.type.split("/") if card.type else []
-
-
 def filter_cards(
     cards: list[Card],
     type: Optional[str] = None,
@@ -309,7 +308,7 @@ def filter_cards(
 ) -> list[Card]:
     if type:
         type = match_value("type", type, [t for t, _ in TYPES])
-        cards = [c for c in cards if type in card_types(c)]
+        cards = [c for c in cards if type in c.types]
     if card_type:
         card_type = match_value("card_type", card_type, ["Pokémon", "Trainer"])
         cards = [c for c in cards if c.card_type == card_type]
@@ -431,7 +430,7 @@ async def get_ranking(
     items = [
         RankingItem(
             rank=i,
-            card=RankingCard(id=card.id, name=card.name, type=card.type, img=card.img),
+            card=RankingCard(id=card.id, name=card.name, type=card.type, types=card.types, img=card.img),
             attack=RankingAttack(**attack.model_dump(exclude={"effect"})) if attack else None,
             value=round(score, 2),
             printings=len(catalog.printings[printing_key(card)]),
@@ -485,7 +484,7 @@ async def get_stats(distinct: bool = Query(False, description="Count reprints (s
         total_cards=len(catalog.cards),
         distinct_cards=len(catalog.distinct),
         by_card_type=count_by(c.card_type for c in cards),
-        by_type=count_by(c.type for c in cards),
+        by_type=count_by(t for c in cards for t in c.types),  # dual-type cards count in both
         by_set=count_by(c.set.code for c in cards),
         data_version=catalog.data_version,
     )

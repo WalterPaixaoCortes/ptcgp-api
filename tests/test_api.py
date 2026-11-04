@@ -22,9 +22,9 @@ def test_stats(client):
     r = client.get("/stats")
     assert r.status_code == 200
     body = r.json()
-    assert body["total_cards"] == 18
-    assert body["distinct_cards"] == 17
-    assert body["by_card_type"] == {"Pokémon": 14, "Trainer": 4}
+    assert body["total_cards"] == 19
+    assert body["distinct_cards"] == 18
+    assert body["by_card_type"] == {"Pokémon": 15, "Trainer": 4}
     assert body["by_type"]["Fire"] == 3
     assert body["by_type"]["Dragon"] == 2
     assert body["by_set"]["A1"] == 4
@@ -33,7 +33,7 @@ def test_stats(client):
 
 def test_stats_distinct(client):
     body = client.get("/stats?distinct=true").json()
-    assert body["by_card_type"]["Pokémon"] == 13
+    assert body["by_card_type"]["Pokémon"] == 14
     assert body["by_type"]["Fire"] == 2
 
 
@@ -46,7 +46,7 @@ def test_filter_by_type_case_insensitive(client, value):
 
 
 def test_filter_card_type_accepts_unaccented(client):
-    assert client.get("/cards?card_type=pokemon").json()["total"] == 14
+    assert client.get("/cards?card_type=pokemon").json()["total"] == 15
     assert client.get("/cards?card_type=Trainer").json()["total"] == 4
 
 
@@ -74,9 +74,9 @@ def test_deprecated_filter_routes(client):
 # P13 / E4
 def test_pagination_envelope(client):
     body = client.get("/cards?limit=5&offset=15").json()
-    assert body["total"] == 18
+    assert body["total"] == 19
     assert (body["limit"], body["offset"]) == (5, 15)
-    assert len(body["items"]) == 3
+    assert len(body["items"]) == 4
 
 
 def test_fields_projection(client):
@@ -89,7 +89,7 @@ def test_fields_projection(client):
 
 def test_sort(client):
     hps = [c["hp"] for c in client.get("/cards?sort=-hp&limit=1000").json()["items"]]
-    assert hps[:3] == [150, 150, 150]
+    assert hps[:4] == [180, 150, 150, 150]
     assert hps[-1] is None  # trainers last
 
 
@@ -149,19 +149,20 @@ def test_search_by_name(client):
 
 # E2
 def test_ranking_damage_per_energy(client):
-    items = client.get("/cards/ranking?limit=6").json()["items"]
+    items = client.get("/cards/ranking?limit=7").json()["items"]
     assert [(i["card"]["name"], i["value"]) for i in items] == [
         ("Kommo-o", 65.0),
         ("Mewtwo ex", 37.5),
+        ("Mega Mewtwo X ex", 33.33),  # "100+" counts at base damage
         ("Hakamo-o", 30.0),
         ("Ho-Oh ex", 26.67),
         ("Ho-Oh", 25.0),  # tie at 25: higher damage (100) beats Lilligant (50)
         ("Lilligant", 25.0),
     ]
-    ho_oh_ex = items[3]
+    ho_oh_ex = items[4]
     assert ho_oh_ex["card"]["id"] == "A4-34"  # original printing
     assert ho_oh_ex["printings"] == 2
-    assert ho_oh_ex["rank"] == 4
+    assert ho_oh_ex["rank"] == 5
     assert ho_oh_ex["attack"] == {"name": "Phoenix Turbo", "cost": ["C", "C", "C"], "energy_count": 3, "damage": 80, "damage_modifier": None}
 
 
@@ -181,12 +182,49 @@ def test_ranking_exclude_variable_and_type(client):
 
 
 def test_ranking_hp(client):
-    items = client.get("/cards/ranking?metric=hp&limit=3").json()["items"]
+    items = client.get("/cards/ranking?metric=hp&limit=4").json()["items"]
     assert [(i["card"]["name"], i["value"], i["attack"]) for i in items] == [
+        ("Mega Mewtwo X ex", 180.0, None),
         ("Ho-Oh ex", 150.0, None),
         ("Kommo-o", 150.0, None),
         ("Mewtwo ex", 150.0, None),
     ]
+
+
+# Dual-type cards count in both types; no composite "Psychic/Fighting" anywhere
+def test_dual_type_card_shape(client):
+    card = client.get("/cards/C1/56").json()
+    assert (card["type"], card["types"]) == ("Psychic", ["Psychic", "Fighting"])
+    assert client.get("/cards/A1/1").json()["types"] == ["Grass"]
+    assert client.get("/cards/B1/213").json()["types"] == []
+
+
+def test_dual_type_counts_in_both(client):
+    body = client.get("/stats").json()
+    assert body["by_type"]["Psychic"] == 3
+    assert body["by_type"]["Fighting"] == 1
+    assert not any("/" in t for t in body["by_type"])
+    assert sum(body["by_type"].values()) == body["by_card_type"]["Pokémon"] + 1
+
+
+@pytest.mark.parametrize("value", ["Psychic", "Fighting"])
+def test_dual_type_found_by_both_filters(client, value):
+    assert "C1-56" in {c["id"] for c in client.get(f"/cards?type={value}&limit=1000").json()["items"]}
+    ranked = client.get(f"/cards/ranking?type={value}&limit=100").json()["items"]
+    mewtwo_x = next(i for i in ranked if i["card"]["id"] == "C1-56")
+    assert mewtwo_x["card"]["types"] == ["Psychic", "Fighting"]
+
+
+def test_load_rejects_composite_type(tmp_path):
+    import json
+
+    data = json.loads((ROOT / "tests" / "fixtures" / "cards.json").read_text(encoding="utf-8"))
+    card = next(c for c in data["cards"] if c["id"] == "C1-56")
+    card["type"], card["types"] = "Psychic/Fighting", ["Psychic/Fighting"]
+    path = tmp_path / "cards.json"
+    path.write_text(json.dumps(data), encoding="utf-8")
+    with pytest.raises(RuntimeError, match="C1-56"):
+        main.load_data(str(path))
 
 
 # E3 / E5 / E6
@@ -201,7 +239,7 @@ def test_meta(client):
         "api_version": main.API_VERSION,
         "data_version": "2026-11-04T12:00:00Z",
         "source": "https://pocket.limitlesstcg.com",
-        "total_cards": 18,
+        "total_cards": 19,
     }
 
 

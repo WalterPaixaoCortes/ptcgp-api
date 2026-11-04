@@ -1,9 +1,9 @@
-# PTCGP API v2.0.0 — Contrato
+# PTCGP API v2.1.0 — Contrato
 
 | Campo | Valor |
 |---|---|
 | Base URL | `https://poketcgp-api-fd77492e0209.herokuapp.com` |
-| Versão | 2.0.0 (incompatível com a 1.0.0, ver [§6](#6-migração-da-v1)) |
+| Versão | 2.1.0 (incompatível com a 1.0.0, ver [§6](#6-migração-da-v1)) |
 | Esquema formal | [openapi.json](openapi.json) (gerado do código; também em `GET /openapi.json` e na UI `GET /docs`) |
 | Problemas que motivaram a versão | [API-ISSUES.md](API-ISSUES.md) |
 
@@ -55,7 +55,8 @@ Sempre JSON com a chave `detail`. O tipo de `detail` depende da origem do erro:
 | `id` | string | não | `"<set>-<número>"`: `"A1-1"`, `"P-A-1"`. Corresponde à rota `/cards/A1/1` |
 | `number` | int | não | Número da carta no set |
 | `name` | string | não | `"Ho-Oh ex"` |
-| `type` | string | sim | Tipo de energia (ver `/types`). `null` em Trainers. Cartas de tipo duplo vêm como `"Psychic/Fighting"` |
+| `type` | string | sim | Tipo de energia principal (ver `/types`). Em cartas de tipo duplo, é o primeiro de `types`. `null` em Trainers |
+| `types` | string[] | não | Todos os tipos de energia: `["Fire"]`, ou `["Psychic", "Fighting"]` nas cartas de tipo duplo. `[]` em Trainers. Nunca há tipo composto (`"Psychic/Fighting"`) |
 | `hp` | int | sim | `null` em Trainers, exceto fósseis (`40`) |
 | `card_type` | `"Pokémon"` \| `"Trainer"` | não | |
 | `stage` | string | sim | Pokémon: `Basic`, `Stage 1`, `Stage 2`. Trainer: `Item`, `Supporter`, `Tool`, `Stadium` |
@@ -74,7 +75,7 @@ Sempre JSON com a chave `detail`. O tipo de `detail` depende da origem do erro:
 ```json
 {
   "id": "A1-260", "number": 260, "name": "Zapdos ex",
-  "type": "Lightning", "hp": 130, "card_type": "Pokémon", "stage": "Basic",
+  "type": "Lightning", "types": ["Lightning"], "hp": 130, "card_type": "Pokémon", "stage": "Basic",
   "evolve": null, "rarity": "☆☆", "ability": null,
   "attacks": [
     { "name": "Peck", "cost": ["L"], "energy_count": 1, "damage": 20,
@@ -94,7 +95,7 @@ Sempre JSON com a chave `detail`. O tipo de `detail` depende da origem do erro:
 ```json
 {
   "id": "B1-213", "number": 213, "name": "Prank Spinner",
-  "type": null, "hp": null, "card_type": "Trainer", "stage": "Item",
+  "type": null, "types": [], "hp": null, "card_type": "Trainer", "stage": "Item",
   "evolve": null, "rarity": "◊◊", "ability": null, "attacks": [],
   "effect": "A card from among both player's hands is chosen at random, revealed to the other player, and shuffled into its owner's deck.",
   "weakness": null, "retreat_cost": null,
@@ -152,8 +153,8 @@ Para exibir o dano como na carta: `` `${damage}${damage_modifier ?? ""}` `` → 
 ### 3.1 `GET /meta`
 
 ```json
-{ "api_version": "2.0.0", "data_version": "2026-11-04T12:00:00Z",
-  "source": "https://pocket.limitlesstcg.com", "total_cards": 18 }
+{ "api_version": "2.1.0", "data_version": "2026-11-04T12:00:00Z",
+  "source": "https://pocket.limitlesstcg.com", "total_cards": 19 }
 ```
 
 `data_version` é o momento da coleta dos dados, não do deploy.
@@ -166,18 +167,18 @@ Para exibir o dano como na carta: `` `${damage}${damage_modifier ?? ""}` `` → 
 
 ```json
 {
-  "total_cards": 18,
-  "distinct_cards": 17,
-  "by_card_type": { "Pokémon": 14, "Trainer": 4 },
-  "by_type": { "Grass": 4, "Fire": 3, "Psychic": 2, "Dragon": 2, "Lightning": 1, "Colorless": 1, "Water": 1 },
-  "by_set": { "A1": 4, "B1": 4, "A3": 2, "A4": 2, "A4b": 2, "A2": 1, "B2a": 1, "P-A": 1, "P-B": 1 },
+  "total_cards": 19,
+  "distinct_cards": 18,
+  "by_card_type": { "Pokémon": 15, "Trainer": 4 },
+  "by_type": { "Grass": 4, "Psychic": 3, "Fire": 3, "Dragon": 2, "Lightning": 1, "Colorless": 1, "Water": 1, "Fighting": 1 },
+  "by_set": { "A1": 4, "B1": 4, "A3": 2, "A4": 2, "A4b": 2, "A2": 1, "B2a": 1, "P-A": 1, "P-B": 1, "C1": 1 },
   "data_version": "2026-11-04T12:00:00Z"
 }
 ```
 
 - `total_cards` e `distinct_cards` não mudam com `distinct`. Os três `by_*` mudam.
 - Os `by_*` vêm em ordem decrescente de contagem. Uma chave só aparece se tiver contagem maior que zero: tipos sem cartas não aparecem, então use `/types` para a lista completa.
-- `by_type` só conta cartas com `type` (Pokémon). Tipos duplos aparecem com a chave literal (`"Psychic/Fighting"`). Assim, a soma de `by_type` é igual a `by_card_type["Pokémon"]`.
+- `by_type` conta cada tipo de `types`, então só entram Pokémon. Uma carta de tipo duplo conta uma vez em cada tipo: o Mega Mewtwo X ex entra em `Psychic` e em `Fighting`. Por isso, a soma de `by_type` pode passar de `by_card_type["Pokémon"]`, na diferença exata do número de cartas duplas.
 
 ### 3.3 `GET /cards/ranking`
 
@@ -202,7 +203,7 @@ Para exibir o dano como na carta: `` `${damage}${damage_modifier ?? ""}` `` → 
   "items": [
     {
       "rank": 1,
-      "card": { "id": "A3-127", "name": "Kommo-o", "type": "Dragon",
+      "card": { "id": "A3-127", "name": "Kommo-o", "type": "Dragon", "types": ["Dragon"],
                 "img": "https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/pocket/A3/A3_127_EN_SM.webp" },
       "attack": { "name": "Clanging Scales", "cost": ["L", "F"], "energy_count": 2,
                   "damage": 130, "damage_modifier": null },
@@ -218,8 +219,8 @@ Para exibir o dano como na carta: `` `${damage}${damage_modifier ?? ""}` `` → 
 
 ```json
 { "metric": "hp", "items": [ { "rank": 1,
-  "card": { "id": "A4-34", "name": "Ho-Oh ex", "type": "Fire", "img": "..." },
-  "attack": null, "value": 150.0, "printings": 2 } ] }
+  "card": { "id": "C1-56", "name": "Mega Mewtwo X ex", "type": "Psychic", "types": ["Psychic", "Fighting"], "img": "..." },
+  "attack": null, "value": 180.0, "printings": 1 } ] }
 ```
 
 ### 3.4 `GET /types`
@@ -325,6 +326,7 @@ export interface Card {
   number: number;
   name: string;
   type: string | null;
+  types: string[];
   hp: number | null;
   card_type: "Pokémon" | "Trainer";
   stage: string | null;
@@ -352,7 +354,7 @@ export interface Stats {
 
 export interface RankingItem {
   rank: number;
-  card: Pick<Card, "id" | "name" | "type" | "img">;
+  card: Pick<Card, "id" | "name" | "type" | "types" | "img">;
   attack: Omit<Attack, "effect" | "damage"> & { damage: number } | null;
   value: number;
   printings: number;
@@ -395,6 +397,7 @@ Com essas chamadas, o dashboard não precisa mais baixar o catálogo inteiro, no
 | `ability.name: "Ability: \n   Toughness Aroma"` | `ability.name: "Toughness Aroma"` |
 | `set: {url, name: "Genetic Apex A1"}` | `set: {code: "A1", name: "Genetic Apex", release_date, url}` |
 | — | novos campos `rarity` e `effect` (texto das Trainers) |
+| — | novo campo `types` (lista); cartas de tipo duplo contam nos dois tipos em `/stats` |
 | 32 cartas com nome, tipo ou HP quebrados (Ho-Oh, Porygon-Z, Chien-Pao, Kommo-o…) | corrigidas |
 | `GET /stats` → 500 | formato da [§3.2](#32-get-stats) |
 | `GET /cards/filter/type` e `/set` → 500; `rarity` → `[]` | funcionam (deprecated) |
