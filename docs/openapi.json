@@ -1,0 +1,1294 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "PTCGP API",
+    "description": "API for TCG Pocket Simulator - Card Database",
+    "version": "2.0.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Root",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cards": {
+      "get": {
+        "summary": "Get Cards",
+        "description": "Cards in the catalog, with filters (case-insensitive), projection and the total count.",
+        "operationId": "get_cards_cards_get",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Energy type, e.g. Fire (see /types)",
+              "title": "Type"
+            },
+            "description": "Energy type, e.g. Fire (see /types)"
+          },
+          {
+            "name": "card_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Pokémon or Trainer",
+              "title": "Card Type"
+            },
+            "description": "Pokémon or Trainer"
+          },
+          {
+            "name": "set",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Set code, e.g. A1 (see /sets)",
+              "title": "Set"
+            },
+            "description": "Set code, e.g. A1 (see /sets)"
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Basic, Stage 1, Stage 2, Item, Supporter, Tool, Stadium",
+              "title": "Stage"
+            },
+            "description": "Basic, Stage 1, Stage 2, Item, Supporter, Tool, Stadium"
+          },
+          {
+            "name": "rarity",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "e.g. ◊◊, ☆, ♛",
+              "title": "Rarity"
+            },
+            "description": "e.g. ◊◊, ☆, ♛"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Comma-separated fields to return, e.g. id,name,type,img",
+              "title": "Fields"
+            },
+            "description": "Comma-separated fields to return, e.g. id,name,type,img"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "name, number, hp, type, retreat_cost or set; prefix '-' for descending",
+              "title": "Sort"
+            },
+            "description": "name, number, hp, type, retreat_cost or set; prefix '-' for descending"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "description": "Page size",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "Page size"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Offset for pagination",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Offset for pagination"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardPage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cards/ranking": {
+      "get": {
+        "summary": "Get Ranking",
+        "description": "Pokémon ranked by their best attack (or HP).\n\nAttacks with zero cost or no damage are ignored. Ties: higher damage, then lower cost, then name.",
+        "operationId": "get_ranking_cards_ranking_get",
+        "parameters": [
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "damage_per_energy",
+                "damage",
+                "hp"
+              ],
+              "type": "string",
+              "default": "damage_per_energy",
+              "title": "Metric"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 10,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "distinct",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Count reprints (same name and attacks) once",
+              "default": true,
+              "title": "Distinct"
+            },
+            "description": "Count reprints (same name and attacks) once"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Energy type (see /types)",
+              "title": "Type"
+            },
+            "description": "Energy type (see /types)"
+          },
+          {
+            "name": "include_variable",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Include '+'/'x' attacks at their base damage",
+              "default": true,
+              "title": "Include Variable"
+            },
+            "description": "Include '+'/'x' attacks at their base damage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Ranking"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cards/search/name/{name}": {
+      "get": {
+        "summary": "Search Cards By Name",
+        "description": "Cards whose name contains `name` (case- and accent-insensitive).",
+        "operationId": "search_cards_by_name_cards_search_name__name__get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Card"
+                  },
+                  "title": "Response Search Cards By Name Cards Search Name  Name  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cards/filter/type/{card_type}": {
+      "get": {
+        "summary": "Filter Cards By Type",
+        "description": "Deprecated: use /cards?type=. Filters by energy type (Fire, Water…).",
+        "operationId": "filter_cards_by_type_cards_filter_type__card_type__get",
+        "deprecated": true,
+        "parameters": [
+          {
+            "name": "card_type",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Card Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Card"
+                  },
+                  "title": "Response Filter Cards By Type Cards Filter Type  Card Type  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cards/filter/rarity/{rarity}": {
+      "get": {
+        "summary": "Filter Cards By Rarity",
+        "description": "Deprecated: use /cards?rarity=.",
+        "operationId": "filter_cards_by_rarity_cards_filter_rarity__rarity__get",
+        "deprecated": true,
+        "parameters": [
+          {
+            "name": "rarity",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Rarity"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Card"
+                  },
+                  "title": "Response Filter Cards By Rarity Cards Filter Rarity  Rarity  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cards/filter/set/{set_name}": {
+      "get": {
+        "summary": "Filter Cards By Set",
+        "description": "Deprecated: use /cards?set=. Accepts the set code (A1) or its name (Genetic Apex).",
+        "operationId": "filter_cards_by_set_cards_filter_set__set_name__get",
+        "deprecated": true,
+        "parameters": [
+          {
+            "name": "set_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Set Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Card"
+                  },
+                  "title": "Response Filter Cards By Set Cards Filter Set  Set Name  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cards/{set_id}/{card_id}": {
+      "get": {
+        "summary": "Get Card By Id",
+        "description": "A single card, e.g. /cards/A1/1 (id A1-1).",
+        "operationId": "get_card_by_id_cards__set_id___card_id__get",
+        "parameters": [
+          {
+            "name": "set_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Set Id"
+            }
+          },
+          {
+            "name": "card_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Card Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Card"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stats": {
+      "get": {
+        "summary": "Get Stats",
+        "description": "Card counts by card type, energy type and set.",
+        "operationId": "get_stats_stats_get",
+        "parameters": [
+          {
+            "name": "distinct",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Count reprints (same name and attacks) once",
+              "default": false,
+              "title": "Distinct"
+            },
+            "description": "Count reprints (same name and attacks) once"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Stats"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/types": {
+      "get": {
+        "summary": "Get Types",
+        "description": "Energy types and the symbol used for them in attack costs.",
+        "operationId": "get_types_types_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TypeInfo"
+                  },
+                  "type": "array",
+                  "title": "Response Get Types Types Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meta": {
+      "get": {
+        "summary": "Get Meta",
+        "description": "API and data versions. Cheap to call: use it as a health check.",
+        "operationId": "get_meta_meta_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Meta"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sets": {
+      "get": {
+        "summary": "Get Sets",
+        "description": "Sets ordered by release date (promos, which have no date, last).",
+        "operationId": "get_sets_sets_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SetSummary"
+                  },
+                  "type": "array",
+                  "title": "Response Get Sets Sets Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Ability": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "text"
+        ],
+        "title": "Ability"
+      },
+      "Attack": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "cost": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Cost"
+          },
+          "energy_count": {
+            "type": "integer",
+            "title": "Energy Count"
+          },
+          "damage": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Damage"
+          },
+          "damage_modifier": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "+",
+                  "x"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Damage Modifier"
+          },
+          "effect": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effect"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "cost",
+          "energy_count",
+          "damage",
+          "damage_modifier",
+          "effect"
+        ],
+        "title": "Attack"
+      },
+      "Card": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "number": {
+            "type": "integer",
+            "title": "Number"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Type"
+          },
+          "hp": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hp"
+          },
+          "card_type": {
+            "type": "string",
+            "enum": [
+              "Pokémon",
+              "Trainer"
+            ],
+            "title": "Card Type"
+          },
+          "stage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stage"
+          },
+          "evolve": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Evolve"
+          },
+          "rarity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rarity"
+          },
+          "ability": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Ability"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "attacks": {
+            "items": {
+              "$ref": "#/components/schemas/Attack"
+            },
+            "type": "array",
+            "title": "Attacks"
+          },
+          "effect": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effect"
+          },
+          "weakness": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weakness"
+          },
+          "retreat_cost": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Retreat Cost"
+          },
+          "img": {
+            "type": "string",
+            "title": "Img"
+          },
+          "set": {
+            "$ref": "#/components/schemas/CardSet"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "number",
+          "name",
+          "type",
+          "hp",
+          "card_type",
+          "stage",
+          "evolve",
+          "rarity",
+          "ability",
+          "attacks",
+          "effect",
+          "weakness",
+          "retreat_cost",
+          "img",
+          "set"
+        ],
+        "title": "Card"
+      },
+      "CardPage": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Card"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total",
+          "limit",
+          "offset",
+          "items"
+        ],
+        "title": "CardPage"
+      },
+      "CardSet": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "release_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Release Date"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "name",
+          "release_date",
+          "url"
+        ],
+        "title": "CardSet"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Meta": {
+        "properties": {
+          "api_version": {
+            "type": "string",
+            "title": "Api Version"
+          },
+          "data_version": {
+            "type": "string",
+            "title": "Data Version"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "total_cards": {
+            "type": "integer",
+            "title": "Total Cards"
+          }
+        },
+        "type": "object",
+        "required": [
+          "api_version",
+          "data_version",
+          "source",
+          "total_cards"
+        ],
+        "title": "Meta"
+      },
+      "Ranking": {
+        "properties": {
+          "metric": {
+            "type": "string",
+            "title": "Metric"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RankingItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "metric",
+          "items"
+        ],
+        "title": "Ranking"
+      },
+      "RankingAttack": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "cost": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Cost"
+          },
+          "energy_count": {
+            "type": "integer",
+            "title": "Energy Count"
+          },
+          "damage": {
+            "type": "integer",
+            "title": "Damage"
+          },
+          "damage_modifier": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "+",
+                  "x"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Damage Modifier"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "cost",
+          "energy_count",
+          "damage",
+          "damage_modifier"
+        ],
+        "title": "RankingAttack"
+      },
+      "RankingCard": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Type"
+          },
+          "img": {
+            "type": "string",
+            "title": "Img"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "type",
+          "img"
+        ],
+        "title": "RankingCard"
+      },
+      "RankingItem": {
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "title": "Rank"
+          },
+          "card": {
+            "$ref": "#/components/schemas/RankingCard"
+          },
+          "attack": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RankingAttack"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "value": {
+            "type": "number",
+            "title": "Value"
+          },
+          "printings": {
+            "type": "integer",
+            "title": "Printings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rank",
+          "card",
+          "attack",
+          "value",
+          "printings"
+        ],
+        "title": "RankingItem"
+      },
+      "SetSummary": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "release_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Release Date"
+          },
+          "card_count": {
+            "type": "integer",
+            "title": "Card Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "name",
+          "release_date",
+          "card_count"
+        ],
+        "title": "SetSummary"
+      },
+      "Stats": {
+        "properties": {
+          "total_cards": {
+            "type": "integer",
+            "title": "Total Cards"
+          },
+          "distinct_cards": {
+            "type": "integer",
+            "title": "Distinct Cards"
+          },
+          "by_card_type": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "By Card Type"
+          },
+          "by_type": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "By Type"
+          },
+          "by_set": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "By Set"
+          },
+          "data_version": {
+            "type": "string",
+            "title": "Data Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_cards",
+          "distinct_cards",
+          "by_card_type",
+          "by_type",
+          "by_set",
+          "data_version"
+        ],
+        "title": "Stats"
+      },
+      "TypeInfo": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type"
+          },
+          "symbol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Symbol"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "symbol"
+        ],
+        "title": "TypeInfo"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
